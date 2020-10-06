@@ -134,15 +134,14 @@ ReturnR0
 ; signed integers.
 ; Parameters:
 ; R0 - x (the number we will raise)
-; R1 - y (the exponent)
+; R1 - y (the exponent, which cannot be negative!)
 Power
 	CMP R0, #1 ; See if x == 1, since 1 ^ anything == 1
 	BEQ ResultIsOne
 	CMP R1, #0 ; See if y == 0, since anything raised to 0 == 1
-	BLT ExponentIsNegative ; If y < 0, the exponent is negative
 	BEQ ExponentIsZero ; If it is, just go to the exponent is zero branch
 	CMP R1, #1 ; If y == 1, then we just return x, since anything raised to 1 == x
-	BEQ ExponentIsOne
+	BEQ ExponentIsOne ; Go to ExponentisOne
 	; At this point, we have to actually raise x by the exponent y
 	MOV R2, #1 ; Setup a result register, initialized to 1
 	; To do so, we will multiply x * x until y == 1
@@ -153,11 +152,8 @@ MultiplyXByItself
 	MOV R0, R2 ; Finally, put the result into R0
 	BX LR ; Return back!
 ResultIsOne
-	MOV R0, #1
-	BX LR
-ExponentIsNegative
-	MOV R0, #0 ; Since the exponent is negative and we are returning integers, 1 / x^(negative num) == 0
-	BX LR
+	MOV R0, #1 ; Our result is one, so just set R0
+	BX LR ; and go back!
 ExponentIsZero
 	MOV R0, #1 ; Return 1 as our result
 	BX LR ; Go back!
