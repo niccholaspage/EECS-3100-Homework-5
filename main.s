@@ -1,13 +1,14 @@
 ;*******************************************************************
 ; main.s
-; Author:
-; Date Created:
-; Last Modified:
-; Section Number:
-; Instructor: 
+; Author: Nicholas Nassar
+; Date Created: 10/04/2020
+; Last Modified: 10/06/2020
+; Section Number: Lecture 001, Lab 002
+; Instructor: Devinder Kaur
 ; Homework Number: 5
-;   Brief description of the program
-;
+;   Includes 5 functions that implement
+;	the functionality required from
+;	homework 5.
 ;*******************************************************************
 
 	AREA	DATA, READONLY
