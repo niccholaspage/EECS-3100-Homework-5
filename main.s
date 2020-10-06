@@ -36,8 +36,8 @@ Start
 	BL FindMinimalValue
 	; Question 5 Testing
 	MOV R0, #5 ; x = 5
-	MOV R1, #0 ; y = 0
-	BL ExponentIsZero
+	MOV R1, #10 ; y = 10
+	BL Power
 
 loop   B    loop
 
@@ -127,6 +127,15 @@ Power
 	BEQ ExponentIsZero ; If it is, just go to the exponent is zero branch
 	CMP R1, #1 ; If y == 1, then we just return x, since anything raised to 1 == x
 	BEQ ExponentIsOne
+	; At this point, we have to actually raise x by the exponent y
+	MOV R2, #1 ; Setup a result register, initialized to 1
+	; To do so, we will multiply x * x until y == 1
+MultiplyXByItself
+	MUL R2, R2, R0 ; Multiply R2 (our result) by x
+	SUBS R1, R1, #1 ; Subtract 1 from R1, set condition flags
+	BNE MultiplyXByItself ; We multiply x by itself again since if y != 1
+	MOV R0, R2 ; Finally, put the result into R0
+	BX LR ; Return back!
 ResultIsOne
 	MOV R0, #1
 	BX LR
