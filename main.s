@@ -10,10 +10,12 @@
 ;
 ;*******************************************************************
 
+	AREA	DATA, READONLY
+MEAN_ARRAY	DCD 1,2,3,4,5,6,7,8,9,10 ; Defines an array named MEAN_ARRAY with 10 elements
 	AREA    |.text|, CODE, READONLY, ALIGN=2
 	THUMB
 ; Not it chief
-MEAN_ARRAY	DCD 1,2,3,4,5,6,7,8,9,10 ; Defines an array named MEAN_ARRAY with 10 elements
+; MEAN_ARRAY	DCD 1,2,3,4,5,6,7,8,9,10 ; Defines an array named MEAN_ARRAY with 10 elements
 	EXPORT  Start
 
 Start
@@ -32,6 +34,10 @@ Start
 	MOV R1, #0x5
 	MOV R2, #0x6
 	BL FindMinimalValue
+	; Question 5 Testing
+	MOV R0, #5 ; x = 5
+	MOV R1, #0 ; y = 0
+	BL ExponentIsZero
 
 loop   B    loop
 
@@ -105,6 +111,23 @@ Continue
 	MOV R0, R2 ; C < A/B, so return C
 ReturnR0
 	BX LR
+
+; Calculates the result of x
+; raised to the power of y.
+; Parameters:
+; R0 - x (the number we will raise)
+; R1 - y (the exponent)
+Power
+	CMP R1, #0 ; See if y == 0, since anything raised to 0 == 1
+	BEQ ExponentIsZero ; If it is, just go to the exponent is zero branch
+	CMP R1, #1 ; If y == 1, then we just return x, since anything raised to 1 == x
+	BEQ ExponentIsOne
+ExponentIsZero
+	MOV R0, #1 ; Return 1 as our result
+	BX LR ; Go back!
+ExponentIsOne
+	; R0 is already x so we are good!
+	BX LR ; Go back
 
        ALIGN      ; make sure the end of this section is aligned
        END        ; end of file
