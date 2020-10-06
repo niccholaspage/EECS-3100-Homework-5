@@ -27,6 +27,11 @@ Start
 	; Question 3 Testing
 	MOV R0, #-10
 	BL CalculateFunction
+	; Question 4 Testing
+	MOV R0, #0x7
+	MOV R1, #0x5
+	MOV R2, #0x6
+	BL FindMinimalValue
 
 loop   B    loop
 
@@ -90,7 +95,16 @@ ReturnZero
 ; R2 - c (third int)
 ; Return value:
 ; Minimal value (R0)
-FindMinimumValue
+FindMinimalValue
+	CMP R0, R1 ; Compare a and b
+	BLT Continue ; If A < B, go to continue
+	MOV R0, R1 ; Set A to B since we just care about B and C at this point
+Continue
+	CMP R0, R2 ; Compare A/B to C
+	BLT ReturnR0 ; A/B < C, so return A/B
+	MOV R0, R2 ; C < A/B, so return C
+ReturnR0
+	BX LR
 
        ALIGN      ; make sure the end of this section is aligned
        END        ; end of file
