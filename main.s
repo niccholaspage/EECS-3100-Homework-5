@@ -114,14 +114,25 @@ ReturnR0
 
 ; Calculates the result of x
 ; raised to the power of y.
+; x, y, and the result are
+; signed integers.
 ; Parameters:
 ; R0 - x (the number we will raise)
 ; R1 - y (the exponent)
 Power
+	CMP R0, #1 ; See if x == 1, since 1 ^ anything == 1
+	BEQ ResultIsOne
 	CMP R1, #0 ; See if y == 0, since anything raised to 0 == 1
+	BLT ExponentIsNegative ; If y < 0, the exponent is negative
 	BEQ ExponentIsZero ; If it is, just go to the exponent is zero branch
 	CMP R1, #1 ; If y == 1, then we just return x, since anything raised to 1 == x
 	BEQ ExponentIsOne
+ResultIsOne
+	MOV R0, #1
+	BX LR
+ExponentIsNegative
+	MOV R0, #0 ; Since the exponent is negative and we are returning integers, 1 / x^(negative num) == 0
+	BX LR
 ExponentIsZero
 	MOV R0, #1 ; Return 1 as our result
 	BX LR ; Go back!
